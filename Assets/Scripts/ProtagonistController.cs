@@ -17,13 +17,11 @@ public class ProtagonistController : MonoBehaviour
     //jump and gravity
     public float gravity = 9.8f;
     public float speedY = 0;
-    bool jumped = false;
+    bool jumping = false;
     bool isGrounded = false;
     public float jumpSpeed = 100;
 
     public float raycastLength = 10;
-
-    BoxCollider feetCollider;
 
     //Animations
     Animator animator;
@@ -36,8 +34,6 @@ public class ProtagonistController : MonoBehaviour
     {
         //m_Rigidbody = GetComponent<Rigidbody>();
         controller = GetComponent<CharacterController>();
-
-        feetCollider = GetComponent<BoxCollider>();
 
         animator = GetComponent<Animator>();
 
@@ -71,7 +67,7 @@ public class ProtagonistController : MonoBehaviour
                 speedY = 0f;
             }
 
-            animator.SetBool("Jumping", false);
+            jumping = false;
             animator.SetBool("Mining", false);
 
 
@@ -169,10 +165,12 @@ public class ProtagonistController : MonoBehaviour
 
         if (speedY > 0)
         {
-            animator.SetBool("Jumping", true);
+            jumping = true;
         }
 
-        if(Input.GetKey("f"))
+        animator.SetBool("Jumping", jumping);
+
+        if (Input.GetKey("f"))
         {
             animator.SetBool("Mining", true);
         }
