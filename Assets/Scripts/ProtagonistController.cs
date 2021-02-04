@@ -90,6 +90,11 @@ public class ProtagonistController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (animator.GetBool("Mining"))
+        {
+            return;
+        }
+
         controller.Move(transform.forward * vertical * speed * Time.deltaTime);
 
         if (horizontal != 0)
@@ -167,7 +172,7 @@ public class ProtagonistController : MonoBehaviour
             animator.SetBool("Jumping", true);
         }
 
-        if(Input.GetKeyDown("f"))
+        if(Input.GetKey("f"))
         {
             animator.SetBool("Mining", true);
         }
