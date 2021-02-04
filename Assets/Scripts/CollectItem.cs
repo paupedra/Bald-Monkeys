@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class CollectItem : MonoBehaviour
 {
+    public GameObject popUp;
     void Start()
     {
-        
+        popUp.SetActive(false);
     }
 
     void Update()
@@ -16,7 +17,20 @@ public class CollectItem : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Destroy(gameObject);    
+        popUp.SetActive(true);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Destroy(gameObject);
+            popUp.SetActive(false);
+        }
+    }
+    void OnTriggerExit(Collider other)
+    {
+        popUp.SetActive(false);
     }
 
 }
