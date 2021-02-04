@@ -72,6 +72,8 @@ public class ProtagonistController : MonoBehaviour
             }
 
             animator.SetBool("Jumping", false);
+            animator.SetBool("Mining", false);
+
 
             if (Input.GetKeyDown("space"))
             {
@@ -163,6 +165,15 @@ public class ProtagonistController : MonoBehaviour
         if (speedY > 0)
         {
             animator.SetBool("Jumping", true);
+        }
+
+        if(Input.GetKeyDown("f"))
+        {
+            animator.SetBool("Mining", true);
+        }
+        else
+        {
+            animator.SetBool("Mining", false);
         }
 
     }
