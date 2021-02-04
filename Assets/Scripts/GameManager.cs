@@ -1,13 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class GameManager : MonoBehaviour
 {
     int artifactsCollected;
 
-    
-    
+    public GameObject pauseMenu;
+
+    public GameObject inventoryMenu;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,15 +28,40 @@ public class GameManager : MonoBehaviour
             //Stop the player movement
             
             //Open inGame menu
-            InGameMenu();
+            PauseMenu();
+        }
+
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            InventoryMenu();
         }
 
     }
 
-
-
-    void InGameMenu()
+    void PauseMenu()
     {
+        if (pauseMenu.activeSelf)
+        {
+            pauseMenu.SetActive(false);
+        }
+        else
+            pauseMenu.SetActive(true);
+        
+    }
 
+    void InventoryMenu()
+    {
+        if (inventoryMenu.activeSelf)
+        {
+            inventoryMenu.SetActive(false);
+        }
+        else
+            inventoryMenu.SetActive(true);
+        
+    }
+
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }
