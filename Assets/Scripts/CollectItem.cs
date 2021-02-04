@@ -5,6 +5,7 @@ using UnityEngine;
 public class CollectItem : MonoBehaviour
 {
     public GameObject popUp;
+    public bool isOnTrigger = false;
     void Start()
     {
         popUp.SetActive(false);
@@ -12,25 +13,26 @@ public class CollectItem : MonoBehaviour
 
     void Update()
     {
-        
+        if (isOnTrigger)
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                Destroy(gameObject);
+                popUp.SetActive(false);
+            }
+        }
     }
 
     void OnTriggerEnter(Collider other)
     {
         popUp.SetActive(true);
+        isOnTrigger = true;
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Destroy(gameObject);
-            popUp.SetActive(false);
-        }
-    }
     void OnTriggerExit(Collider other)
     {
         popUp.SetActive(false);
+        isOnTrigger = false;
     }
 
 }
