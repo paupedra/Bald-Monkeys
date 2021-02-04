@@ -1410,7 +1410,7 @@ MonoBehaviour:
   speed: 10
   gravity: 20
   speedY: 0
-  jumpSpeed: 10
+  jumpSpeed: 12.5
   raycastLength: 0.1
 --- !u!1 &329728464637169905
 GameObject:

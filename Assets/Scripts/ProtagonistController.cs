@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class SeñoraController : MonoBehaviour
+public class ProtagonistController : MonoBehaviour
 {
     //Movement and rotation
     float horizontal = 0;
@@ -55,41 +55,33 @@ public class SeñoraController : MonoBehaviour
 
         transform.Rotate(new Vector3(0, mouseRotation * rotationSpeed, 0) * Time.deltaTime);
 
-        if(vertical >0)
-        {
-            animator.SetBool("Walking", true);
-        }
-        else
-        {
-            animator.SetBool("Walking", false);
-        }
-
         if (Input.GetKeyDown("c"))
         {
             SwitchLockedMouse();
         }
 
         isGrounded = IsGrounded();
-        
 
+        bool isGroundClose = IsGroundClose();
 
-        if (isGrounded && speedY <= 0)
+        if (isGroundClose && speedY <= 0)
         {
-            speedY = 0f;
+            if (isGrounded)
+            {
+                speedY = 0f;
+            }
+
             animator.SetBool("Jumping", false);
+
             if (Input.GetKeyDown("space"))
             {
                 speedY = jumpSpeed;
             }
+
         }
+       
 
-        if(speedY >0)
-        {
-            animator.SetBool("Jumping", true);
-        }
-
-
-
+        UpdateAnimatorParameters();
 
         ApplyGravity();
     }
@@ -97,7 +89,23 @@ public class SeñoraController : MonoBehaviour
     private void FixedUpdate()
     {
         controller.Move(transform.forward * vertical * speed * Time.deltaTime);
-        controller.Move(transform.right * horizontal * speed * Time.deltaTime);
+
+        if (horizontal != 0)
+        {
+            controller.Move(transform.right * horizontal * 0.5f * speed  * Time.deltaTime);
+
+            if (vertical == 0)
+            {
+                if (horizontal > 0)
+                {
+                    controller.Move(transform.forward * horizontal * speed * Time.deltaTime);
+                }
+                else
+                {
+                    controller.Move(transform.forward * -horizontal * speed * Time.deltaTime);
+                }
+            }
+        }
     }
 
     void ApplyGravity()
@@ -125,6 +133,40 @@ public class SeñoraController : MonoBehaviour
         isMouseLocked = !isMouseLocked;
     }
 
+    void UpdateAnimatorParameters()
+    {
+        if (vertical > 0)
+        {
+            animator.SetBool("Walking", true);
+        }
+        else
+        {
+            animator.SetBool("Walking", false);
+        }
+
+        if (horizontal > 0)
+        {
+            animator.SetBool("StrafingRight", true);
+            animator.SetBool("StrafingLeft", false);
+        }
+        else if (horizontal == 0)
+        {
+            animator.SetBool("StrafingRight", false);
+            animator.SetBool("StrafingLeft", false);
+        }
+        else
+        {
+            animator.SetBool("StrafingRight", false);
+            animator.SetBool("StrafingLeft", true);
+        }
+
+        if (speedY > 0)
+        {
+            animator.SetBool("Jumping", true);
+        }
+
+    }
+
     bool IsGrounded()
     {
         bool hit = Physics.Raycast(new Ray(transform.position, new Vector3(0, -1, 0)),raycastLength);
@@ -141,6 +183,25 @@ public class SeñoraController : MonoBehaviour
         }
 
         Debug.DrawRay(transform.position, new Vector3(0, -raycastLength, 0),rayColor,1f);
+
+        return hit;
+    }
+    bool IsGroundClose()
+    {
+        bool hit = Physics.Raycast(new Ray(transform.position, new Vector3(0, -1, 0)), raycastLength + 0.4f);
+
+        Color rayColor = Color.red;
+
+        if (hit)
+        {
+            rayColor = Color.red;
+        }
+        else
+        {
+            rayColor = Color.green;
+        }
+
+        Debug.DrawRay(transform.position, new Vector3(0, -raycastLength + 0.4f, 0), rayColor, 1f);
 
         return hit;
     }
