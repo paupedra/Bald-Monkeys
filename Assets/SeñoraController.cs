@@ -25,7 +25,8 @@ public class SeñoraController : MonoBehaviour
 
     BoxCollider feetCollider;
 
-   
+    //Animations
+    Animator animator;
 
     // Rigidbody m_Rigidbody;
     CharacterController controller;
@@ -37,6 +38,8 @@ public class SeñoraController : MonoBehaviour
         controller = GetComponent<CharacterController>();
 
         feetCollider = GetComponent<BoxCollider>();
+
+        animator = GetComponent<Animator>();
 
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
         UnityEngine.Cursor.visible = false;
@@ -52,24 +55,37 @@ public class SeñoraController : MonoBehaviour
 
         transform.Rotate(new Vector3(0, mouseRotation * rotationSpeed, 0) * Time.deltaTime);
 
-
+        if(vertical >0)
+        {
+            animator.SetBool("Walking", true);
+        }
+        else
+        {
+            animator.SetBool("Walking", false);
+        }
 
         if (Input.GetKeyDown("c"))
         {
             SwitchLockedMouse();
         }
 
-       isGrounded = IsGrounded();
+        isGrounded = IsGrounded();
         
 
 
-        if (isGrounded)
+        if (isGrounded && speedY <= 0)
         {
-            //speedY = -2f;
+            speedY = 0f;
+            animator.SetBool("Jumping", false);
             if (Input.GetKeyDown("space"))
             {
                 speedY = jumpSpeed;
             }
+        }
+
+        if(speedY >0)
+        {
+            animator.SetBool("Jumping", true);
         }
 
 
@@ -86,12 +102,12 @@ public class SeñoraController : MonoBehaviour
 
     void ApplyGravity()
     {
-        if (!controller.isGrounded)
+        if (!isGrounded)
         {
             speedY -= gravity * Time.deltaTime;
-
-            controller.Move(new Vector3(0, speedY * Time.deltaTime, 0));
         }
+
+        controller.Move(new Vector3(0, speedY * Time.deltaTime, 0));
     }
 
     void SwitchLockedMouse()
@@ -111,7 +127,7 @@ public class SeñoraController : MonoBehaviour
 
     bool IsGrounded()
     {
-        bool hit = Physics.Raycast(new Ray(transform.position, new Vector3(0, -raycastLength, 0)),1.2f);
+        bool hit = Physics.Raycast(new Ray(transform.position, new Vector3(0, -1, 0)),raycastLength);
 
         Color rayColor = Color.red;
 
@@ -124,7 +140,7 @@ public class SeñoraController : MonoBehaviour
             rayColor = Color.green;
         }
 
-        Debug.DrawRay(transform.position, new Vector3(0, -raycastLength, 0),rayColor,1.2f);
+        Debug.DrawRay(transform.position, new Vector3(0, -raycastLength, 0),rayColor,1f);
 
         return hit;
     }
