@@ -5,20 +5,22 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public string url;
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.anyKeyDown && !Input.GetMouseButtonDown(0))
+            LoadGameScene();
     }
 
     public void LoadGameScene()
     {
         SceneManager.LoadScene("GameScene");
+    }
+
+    public void OpenWebPage()
+    {
+        Application.OpenURL(url);
     }
 }
