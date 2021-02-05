@@ -13,9 +13,19 @@ enum GameState
     NONE = 0
 }
 
+enum artifactUI
+{   
+    NONE = 3,
+    MODEL = 2,
+    TEXT = 1,
+    IMAGE=0
+}
+
 public class GameManager : MonoBehaviour
 {
     public MinigameController minigameController;
+
+    artifactUI UiState = artifactUI.MODEL;
 
     GameState gameState = GameState.NONE;
     GameState oldState = GameState.NONE;
@@ -31,14 +41,13 @@ public class GameManager : MonoBehaviour
     string[] artifactNames = new string[5];
 
     //rotating UI
-    public GameObject rotatingObject;
-    public GameObject model;
-    public GameObject artifactText;
-    public GameObject artifactImage;
+    public GameObject artifactUiModel;
+    public GameObject artifactUiText;
+    public GameObject artifactUiImage;
 
     public Object[] artifactModels;
-    public Object[] artifactTexts;
-    public Object[] artifactImages;
+    public Sprite[] artifactTexts;
+    public Sprite[] artifactImages;
 
     //Artifacts
     public bool[] artifacts = new bool[5];
@@ -52,13 +61,14 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < 5; i++)
         {
-            artifacts[i] = false;
+            artifacts[i] = true;
         }
 
         gameState = GameState.FREEWALK;
 
         SwitchLockedMouse();
 
+        inventoryCamera.enabled = false;
         playerCamera.enabled = true;
         minigameCamera.enabled = false;
 
@@ -94,6 +104,17 @@ public class GameManager : MonoBehaviour
             SwitchInventory();
         }
 
+        if(gameState == GameState.INVENTORY)
+        {
+            if(Input.GetKeyDown("a"))
+            {
+                TurnArtifactUiLeft();
+            }
+            if (Input.GetKeyDown("d"))
+            {
+                TurnArtifactUiRight();
+            }
+        }
     }
 
     public void SwitchPauseGame() //Pause and unpause game
@@ -228,50 +249,112 @@ public class GameManager : MonoBehaviour
 
     public void ShowAnalyticalEngine()
     {
-        SwitchRotatingUi(0);
+        SwitchArtifactUi(0);
     }
     public void ShowCalculator()
     {
-        SwitchRotatingUi(1);
+        SwitchArtifactUi(1);
     }
     public void ShowPlesiosaurus()
     {
-        SwitchRotatingUi(2);
+        SwitchArtifactUi(2);
     }
     public void ShowQuartzElectrometer()
     {
-        SwitchRotatingUi(3);
+        SwitchArtifactUi(3);
     }
     public void ShowTelescope()
     {
-        SwitchRotatingUi(4);
+        SwitchArtifactUi(4);
     }
 
-    void SwitchRotatingUi(int i)
+    void SwitchArtifactUi(int i)
     {
         if (artifacts[i])
         {
-            ClearRotatingUi();
+            foreach (Transform mod in artifactUiModel.transform)
+            {
+                Destroy(mod.gameObject);
+            }
+            Instantiate(artifactModels[i], artifactUiModel.transform.position, artifactUiModel.transform.rotation, artifactUiModel.transform);
 
-            Instantiate(artifactModels[i], model.transform.position, model.transform.rotation, model.transform);
-            Instantiate(artifactTexts[i], artifactText.transform.position, artifactText.transform.rotation, artifactText.transform);
-            Instantiate(artifactImages[i], artifactImage.transform.position, artifactImage.transform.rotation, artifactImage.transform);
+            switch(i)
+            {
+                case 0:
+                    artifactUiModel.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+                    
+                    break;
+                case 1: //calculator
+                    artifactUiModel.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+                    break;
+                case 2: //dinosaurio
+                    artifactUiModel.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                    break;
+                case 3: //quartz
+                    artifactUiModel.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+                    break;
+                case 4: //telescope
+                    artifactUiModel.transform.localScale =new Vector3(0.2f, 0.2f, 0.2f);
+                    break;
+            }
+
+            artifactUiText.GetComponent<SpriteRenderer>().sprite = artifactTexts[i];
+            artifactUiImage.GetComponent<SpriteRenderer>().sprite = artifactImages[i];
+        }
+        SwitchUIArtifact();
+        
+    }
+
+    void SwitchUIArtifact()
+    {
+        switch (UiState)
+        {
+            case artifactUI.MODEL:
+                artifactUiModel.SetActive(true);
+                artifactUiText.SetActive(false);
+                artifactUiImage.SetActive(false);
+                break;
+            case artifactUI.IMAGE:
+                artifactUiModel.SetActive(false);
+                artifactUiText.SetActive(false);
+                artifactUiImage.SetActive(true);
+                break;
+            case artifactUI.TEXT:
+                artifactUiModel.SetActive(false);
+                artifactUiText.SetActive(true);
+                artifactUiImage.SetActive(false);
+                break;
         }
     }
 
-    void ClearRotatingUi()
+    public void TurnArtifactUiRight() //add
     {
-        foreach (Transform mod in model.transform)
+        int i = (int)UiState;
+        i++;
+        UiState = (artifactUI)i;
+
+        if (i == 3)
         {
-            Destroy(mod.gameObject);
+            UiState = artifactUI.IMAGE;
         }
-        foreach (Transform mod in artifactText.transform)
+        SwitchUIArtifact();
+    }
+
+    public void TurnArtifactUiLeft() //substract
+    {
+        int i = (int)UiState;
+        i--;
+        UiState = (artifactUI)i;
+
+        if (i == -1)
         {
-            Destroy(mod.gameObject);
+            UiState = artifactUI.MODEL;
         }
-        foreach (Transform mod in artifactImage.transform)
-        {
-            Destroy(mod.gameObject);
-        }
+        SwitchUIArtifact();
+    }
+
+    void UpdateArtifactUi()
+    {
+
     }
 }
