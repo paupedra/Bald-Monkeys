@@ -8,25 +8,28 @@ public class ProtagonistController : MonoBehaviour
     //Movement and rotation
     float horizontal = 0;
     float vertical = 0;
-    float mouseRotation = 0;
+    Vector2 mouseRotation = Vector2.zero;
 
-    bool isMouseLocked = false;
     public float rotationSpeed = 2;
     public float speed = 5;
 
     //jump and gravity
     public float gravity = 9.8f;
     public float speedY = 0;
-    bool jumped = false;
+    bool jumping = false;
     bool isGrounded = false;
     public float jumpSpeed = 100;
 
     public float raycastLength = 10;
 
-    BoxCollider feetCollider;
-
     //Animations
     Animator animator;
+
+    //Camera
+    public GameObject m_HeadJoint;
+
+    //game Manager
+    public GameManager manager;
 
     // Rigidbody m_Rigidbody;
     CharacterController controller;
@@ -34,30 +37,41 @@ public class ProtagonistController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //m_Rigidbody = GetComponent<Rigidbody>();
         controller = GetComponent<CharacterController>();
 
-        feetCollider = GetComponent<BoxCollider>();
-
         animator = GetComponent<Animator>();
-
-        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
-        UnityEngine.Cursor.visible = false;
-        isMouseLocked = true;
     }
 
     // Update is called once per frame
     void Update()
     {
+        int state = manager.GetGameState();
+
+        if(state != 3)
+        {
+            animator.enabled = false;
+            return;
+        }
+
+        animator.enabled = true;
+
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
-        mouseRotation = Input.GetAxis("Mouse X");
+        mouseRotation.x = Input.GetAxis("Mouse X");
+        mouseRotation.y = Input.GetAxis("Mouse Y");
 
-        transform.Rotate(new Vector3(0, mouseRotation * rotationSpeed, 0) * Time.deltaTime);
+        transform.Rotate(new Vector3(0, mouseRotation.x * rotationSpeed * Time.deltaTime, 0) );
 
-        if (Input.GetKeyDown("c"))
+        Quaternion previousRotation = m_HeadJoint.transform.rotation;
+
+        m_HeadJoint.transform.Rotate(new Vector3(-mouseRotation.y * rotationSpeed * Time.deltaTime, 0, 0));
+
+        if (m_HeadJoint.transform.rotation.eulerAngles.x >= 30)
         {
-            SwitchLockedMouse();
+            if (m_HeadJoint.transform.rotation.eulerAngles.x <= 345)
+            {
+                m_HeadJoint.transform.rotation = previousRotation;
+            }
         }
 
         isGrounded = IsGrounded();
@@ -71,7 +85,7 @@ public class ProtagonistController : MonoBehaviour
                 speedY = 0f;
             }
 
-            animator.SetBool("Jumping", false);
+            jumping = false;
 
             if (Input.GetKeyDown("space"))
             {
@@ -79,7 +93,6 @@ public class ProtagonistController : MonoBehaviour
             }
 
         }
-       
 
         UpdateAnimatorParameters();
 
@@ -88,6 +101,18 @@ public class ProtagonistController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        int state = manager.GetGameState();
+
+        if (state != 3)
+        {
+            return;
+        }
+
+        if (animator.GetBool("Mining"))
+        {
+            return;
+        }
+
         controller.Move(transform.forward * vertical * speed * Time.deltaTime);
 
         if (horizontal != 0)
@@ -118,20 +143,7 @@ public class ProtagonistController : MonoBehaviour
         controller.Move(new Vector3(0, speedY * Time.deltaTime, 0));
     }
 
-    void SwitchLockedMouse()
-    {
-        if (isMouseLocked)
-        {
-            UnityEngine.Cursor.lockState = CursorLockMode.None;
-            UnityEngine.Cursor.visible = true;
-        }
-        else
-        {
-            UnityEngine.Cursor.lockState = CursorLockMode.Locked;
-            UnityEngine.Cursor.visible = false;
-        }
-        isMouseLocked = !isMouseLocked;
-    }
+    
 
     void UpdateAnimatorParameters()
     {
@@ -162,9 +174,22 @@ public class ProtagonistController : MonoBehaviour
 
         if (speedY > 0)
         {
-            animator.SetBool("Jumping", true);
+            jumping = true;
         }
 
+        animator.SetBool("Jumping", jumping);
+
+        if (Input.GetKey("f"))
+        {
+            animator.SetBool("Mining", true);
+        }
+        else 
+        {
+            animator.SetBool("Mining", false);
+        }
+
+
+        //animator.GetCurrentAnimatorStateInfo(1).loop  ---> possible solution to the walk + mining bug
     }
 
     bool IsGrounded()

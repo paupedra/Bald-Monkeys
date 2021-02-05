@@ -11,24 +11,25 @@ public class Dust : MonoBehaviour
     public float minDistance = 2.0f;
     public GameObject character;
 
+    Mesh mesh;
     // Start is called before the first frame update
     void Start()
     {
+        mesh = GetComponent<MeshFilter>().mesh;
+        vertices = mesh.vertices;
     }
 
     // Update is called once per frame
     void Update()
     {
-       Mesh mesh = GetComponent<MeshFilter>().mesh;
-       vertices = mesh.vertices;
-
+       
        for(int i = 0; i < vertices.Length; ++i)
         {
-            float distance = ((character.transform.position.x - vertices[i].x)* (character.transform.position.x - vertices[i].x)) + 
-                ((character.transform.position.y - vertices[i].y) * (character.transform.position.y - vertices[i].y)) + 
-                ((character.transform.position.z - vertices[i].z) * (character.transform.position.z - vertices[i].z));
+            float distance = Mathf.Sqrt(((character.transform.position.x - (vertices[i].x + transform.position.x)) * (character.transform.position.x - (vertices[i].x + transform.position.x))) + 
+                ((character.transform.position.y - (vertices[i].y + transform.position.y)) * (character.transform.position.y - (vertices[i].y + transform.position.y))) + 
+                ((character.transform.position.z - (vertices[i].z + transform.position.z)) * (character.transform.position.z - (vertices[i].z + transform.position.z))));
 
-            if(distance < minDistance)
+            if(distance  < minDistance )
             {
                 Bacuum(i, Time.deltaTime);
             }
