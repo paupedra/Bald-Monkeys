@@ -24,16 +24,16 @@ public class Dust : MonoBehaviour
     {
        
        for(int i = 0; i < vertices.Length; ++i)
-        {
+       {
             float distance = Mathf.Sqrt(((character.transform.position.x - (vertices[i].x + transform.position.x)) * (character.transform.position.x - (vertices[i].x + transform.position.x))) + 
                 ((character.transform.position.y - (vertices[i].y + transform.position.y)) * (character.transform.position.y - (vertices[i].y + transform.position.y))) + 
                 ((character.transform.position.z - (vertices[i].z + transform.position.z)) * (character.transform.position.z - (vertices[i].z + transform.position.z))));
 
-            if(distance  < minDistance )
+            if(distance  < minDistance && Input.GetMouseButtonDown(0))
             {
                 Bacuum(i, Time.deltaTime);
             }
-        }
+       }
 
         mesh.vertices = vertices;
     }
