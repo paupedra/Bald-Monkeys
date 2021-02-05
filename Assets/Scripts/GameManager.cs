@@ -56,12 +56,14 @@ public class GameManager : MonoBehaviour
 
     public GameObject inventoryMenu;
 
+    Quaternion oldRotationModel;
+
     // Start is called before the first frame update
     void Start()
     {
         for (int i = 0; i < 5; i++)
         {
-            artifacts[i] = true;
+            artifacts[i] = false;
         }
 
         gameState = GameState.FREEWALK;
@@ -86,6 +88,8 @@ public class GameManager : MonoBehaviour
             artifactButtons[i].GetComponentInChildren<Text>().text = "?";
             artifactButtons[i].GetComponentInChildren<RawImage>().texture = hiddenArtifactSprites[i]; //hiddenArtifactSprites[i]
         }
+
+        oldRotationModel = artifactUiModel.transform.rotation;
     }
 
     // Update is called once per frame
@@ -282,19 +286,23 @@ public class GameManager : MonoBehaviour
             {
                 case 0:
                     artifactUiModel.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
-                    
+                    artifactUiModel.transform.rotation = oldRotationModel;
                     break;
                 case 1: //calculator
                     artifactUiModel.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+                    artifactUiModel.transform.Rotate(new Vector3(15f, 180f, 0f));
                     break;
                 case 2: //dinosaurio
                     artifactUiModel.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                    artifactUiModel.transform.rotation = oldRotationModel;
                     break;
                 case 3: //quartz
                     artifactUiModel.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+                    artifactUiModel.transform.rotation = oldRotationModel;
                     break;
                 case 4: //telescope
-                    artifactUiModel.transform.localScale =new Vector3(0.2f, 0.2f, 0.2f);
+                    artifactUiModel.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+                    artifactUiModel.transform.rotation = oldRotationModel;
                     break;
             }
 

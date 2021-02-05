@@ -35,7 +35,7 @@ public class Dust : MonoBehaviour
             {
                 float distanceToObject = Vector3.Distance(character.transform.position, transform.position);
 
-                if (distanceToObject < 20.0f)
+                if (distanceToObject < 30.0f)
                 { 
                     for (int i = 0; i < vertices.Length; ++i)
                     {

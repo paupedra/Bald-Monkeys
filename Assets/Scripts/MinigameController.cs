@@ -187,6 +187,6 @@ public class MinigameController : MonoBehaviour
 
         artifactRenderer.gameObject.transform.SetPositionAndRotation(new Vector3(grid[r].gridTile.transform.position.x +0.4f , grid[r].gridTile.transform.position.y - 0.4f, artifactRenderer.transform.position.z),artifactRenderer.transform.rotation);
 
-        artifactRenderer.sprite = artifactSprites[artifactId];
+        artifactRenderer.sprite = artifactSprites[artifactId-1];
     }
 }
