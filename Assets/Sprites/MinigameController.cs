@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-
-
+using UnityEngine.UI;
 
 public class MinigameController : MonoBehaviour
 {
@@ -15,6 +14,11 @@ public class MinigameController : MonoBehaviour
     }
 
     Tile[] grid = new Tile[25];
+
+    public Text artifactFoundText;
+
+    public float endgameDelay=1;
+    float endGameTimer = 0;
 
     public GameManager manager;
     public ProtagonistController protagonist;
@@ -43,6 +47,9 @@ public class MinigameController : MonoBehaviour
             }
         }
 
+        artifactFoundText.gameObject.SetActive(true);
+
+        artifactFoundText.enabled = false;
     }
 
     // Update is called once per frame
@@ -92,7 +99,15 @@ public class MinigameController : MonoBehaviour
 
         if (score >= 4)
         {
-            EndMinigame();
+            artifactFoundText.enabled = true;
+            endGameTimer += Time.deltaTime;
+
+            if (endGameTimer >= endgameDelay)
+            {
+                endGameTimer = 0;
+                artifactFoundText.enabled = false;
+                EndMinigame();
+            }
         }
 
     }
@@ -110,11 +125,13 @@ public class MinigameController : MonoBehaviour
         ChooseTile();
 
         score = 0;
+
+        artifactFoundText.enabled = false;
     }
 
     public void EndMinigame()
     {
-        protagonist.AddArtifact(artifactId);
+        manager.AddArtifact(artifactId);
         manager.EndMinigame();
         Destroy(GameObject.Find("Artifact" + artifactId.ToString()));
     }
@@ -123,7 +140,7 @@ public class MinigameController : MonoBehaviour
     {
         int r = Random.Range(0, 25);
 
-        while (grid[r].pos.x == 5 || grid[r].pos.y == 5)
+        while (grid[r].pos.x == 4 || grid[r].pos.y == 4)
         {
             r = Random.Range(0, 25);
         }
