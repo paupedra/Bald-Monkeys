@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 enum GameState
 {
+    INVENTORY = 4,
     FREEWALK = 3,
     PAUSED = 2,
     MINIGAME = 1,
@@ -27,19 +28,18 @@ public class GameManager : MonoBehaviour
 
     public GameObject inventoryMenu;
 
-    bool isMouseLocked = false;
-
     // Start is called before the first frame update
     void Start()
     {
-        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
-        UnityEngine.Cursor.visible = false;
-        isMouseLocked = true;
+        gameState = GameState.FREEWALK;
+
+        SwitchLockedMouse();
 
         playerCamera.enabled = true;
         minigameCamera.enabled = false;
 
-        gameState = GameState.FREEWALK;
+        inventoryMenu.SetActive(false);
+        pauseMenu.SetActive(false);
     }
 
     // Update is called once per frame
@@ -47,45 +47,52 @@ public class GameManager : MonoBehaviour
     {
         
         //Open inGame menu when ESC is pressed
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(Input.GetKeyDown(KeyCode.Escape) && gameState != GameState.INVENTORY)
         {
-            //Stop the player movement
-            
-            //Open inGame menu
-            PauseMenu();
-
-            SwitchLockedMouse();
-
-            if(gameState != GameState.PAUSED)
-            {
-                oldState = gameState;
-                gameState = GameState.PAUSED;
-            }
-            else
-            {
-                gameState = oldState;
-            }
-            
+            SwitchPauseGame();
         }
 
-        if(Input.GetKeyDown(KeyCode.Tab))
+
+        if(Input.GetKeyDown(KeyCode.Tab) && gameState != GameState.PAUSED)
         {
-            InventoryMenu();
-
-            SwitchLockedMouse();
-
-            if (gameState != GameState.PAUSED)
-            {
-                oldState = gameState;
-                gameState = GameState.PAUSED;
-            }
-            else
-            {
-                gameState = oldState;
-            }
-
+            SwitchInventory();
         }
 
+    }
+
+    public void SwitchPauseGame() //Pause and unpause game
+    {
+        //Open inGame menu
+        PauseMenu();
+
+        if (gameState != GameState.PAUSED)
+        {
+            oldState = gameState;
+            gameState = GameState.PAUSED;
+        }
+        else
+        {
+            gameState = oldState;
+        }
+
+        SwitchLockedMouse(); //Do after switching GameState
+    }
+
+    public void SwitchInventory()
+    {
+        InventoryMenu();
+
+        if (gameState != GameState.INVENTORY)
+        {
+            oldState = gameState;
+            gameState = GameState.INVENTORY;
+        }
+        else
+        {
+            gameState = oldState;
+        }
+
+        SwitchLockedMouse(); //Do after switching GameState
     }
 
     void PauseMenu()
@@ -109,8 +116,16 @@ public class GameManager : MonoBehaviour
         SwitchLockedMouse();
 
         //code to start overlay of minigame and unlock mouse and such
-        minigameController.StartMinigame();
+        minigameController.StartMinigame(id);
 
+    }
+
+    public void EndMinigame()
+    {
+        playerCamera.enabled = true;
+        minigameCamera.enabled = false;
+        gameState = GameState.FREEWALK;
+        SwitchLockedMouse();
     }
 
     void InventoryMenu()
@@ -125,17 +140,16 @@ public class GameManager : MonoBehaviour
     }
     void SwitchLockedMouse()
     {
-        if (isMouseLocked)
-        {
-            UnityEngine.Cursor.lockState = CursorLockMode.None;
-            UnityEngine.Cursor.visible = true;
-        }
-        else
+        if (gameState == GameState.FREEWALK)
         {
             UnityEngine.Cursor.lockState = CursorLockMode.Locked;
             UnityEngine.Cursor.visible = false;
         }
-        isMouseLocked = !isMouseLocked;
+        else
+        {
+            UnityEngine.Cursor.lockState = CursorLockMode.None;
+            UnityEngine.Cursor.visible = true;
+        }
     }
 
     public int GetGameState()
