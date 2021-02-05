@@ -341,7 +341,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.50060135
   m_TransitionOffset: 0.008124869
   m_ExitTime: 0.041024357
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -354,15 +354,6 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 2
-    m_ConditionEvent: Walking
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: Jumping
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: StrafingLeft
-    m_EventTreshold: 0
   - m_ConditionMode: 1
     m_ConditionEvent: StrafingRight
     m_EventTreshold: 0
@@ -375,10 +366,10 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.24999996
+  m_TransitionDuration: 0.043042246
   m_TransitionOffset: 0.000001526903
-  m_ExitTime: 0.00350228
-  m_HasExitTime: 1
+  m_ExitTime: 0.0035022798
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -394,19 +385,16 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: Mining
     m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: Walking
-    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6407709705646613614}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.2500001
+  m_TransitionDuration: 0.049268723
   m_TransitionOffset: 0
-  m_ExitTime: 0
-  m_HasExitTime: 1
+  m_ExitTime: 0.0000000014889465
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -422,17 +410,8 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: Mining
     m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: Walking
-    m_EventTreshold: 0
   - m_ConditionMode: 1
     m_ConditionEvent: StrafingLeft
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: StrafingRight
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: Jumping
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1873425808933743827}
@@ -440,10 +419,10 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0.12650895
   m_TransitionOffset: 0
-  m_ExitTime: 0.8469388
-  m_HasExitTime: 1
+  m_ExitTime: 0.0073052133
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -684,10 +663,10 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.2500001
-  m_TransitionOffset: 0.009116594
-  m_ExitTime: 0.0071924687
-  m_HasExitTime: 1
+  m_TransitionDuration: 0.101066664
+  m_TransitionOffset: 0.009116595
+  m_ExitTime: 0.007192468
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -832,6 +811,18 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: StrafingRight
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Walking
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: StrafingLeft
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Mining
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Walking
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -5006071740191616110}
   m_Solo: 0
@@ -857,19 +848,16 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: Mining
     m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: StrafingRight
-    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6407709705646613614}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25000003
+  m_TransitionDuration: 0.0647633
   m_TransitionOffset: 0
-  m_ExitTime: 0
-  m_HasExitTime: 1
+  m_ExitTime: 0.0000000029708533
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -900,7 +888,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.29854903
+  m_TransitionDuration: 0.093610965
   m_TransitionOffset: 0
   m_ExitTime: 0
   m_HasExitTime: 0
@@ -925,7 +913,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.028586326
+  m_TransitionDuration: 0.02256915
   m_TransitionOffset: 0
   m_ExitTime: 0
   m_HasExitTime: 0
@@ -1005,7 +993,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.4047349
+  m_TransitionDuration: 0.013618405
   m_TransitionOffset: 0
   m_ExitTime: 0
   m_HasExitTime: 0
@@ -1049,19 +1037,16 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: Mining
     m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: StrafingLeft
-    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6407709705646613614}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25000015
-  m_TransitionOffset: 0.005271505
-  m_ExitTime: 0
-  m_HasExitTime: 1
+  m_TransitionDuration: 0.043593504
+  m_TransitionOffset: 0.005271507
+  m_ExitTime: 0.0000000029708533
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -1077,15 +1062,27 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: Mining
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Jumping
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: StrafingLeft
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: StrafingRight
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Walking
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6407709705646613614}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25000006
+  m_TransitionDuration: 0.05060881
   m_TransitionOffset: 0
-  m_ExitTime: 0
+  m_ExitTime: 2.3069695e-11
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
