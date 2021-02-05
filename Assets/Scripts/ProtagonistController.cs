@@ -21,7 +21,7 @@ public class ProtagonistController : MonoBehaviour
     public float jumpSpeed = 100;
 
     public float raycastLength = 10;
-    bool mining = false;
+    public bool mining = false;
 
     float miningTimer = 0;
 
