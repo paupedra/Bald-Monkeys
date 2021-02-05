@@ -17,13 +17,15 @@ public class ProtagonistController : MonoBehaviour
     public float gravity = 9.8f;
     public float speedY = 0;
     bool jumping = false;
-    bool isGrounded = false;
+    public bool isGrounded = false;
     public float jumpSpeed = 100;
 
     public float raycastLength = 10;
     public bool mining = false;
 
     float miningTimer = 0;
+
+    Quaternion previousRotation;
 
     //Artifacts
     bool[] artifacts = new bool[5];
@@ -50,6 +52,7 @@ public class ProtagonistController : MonoBehaviour
         controller = GetComponent<CharacterController>();
 
         animator = GetComponent<Animator>();
+        previousRotation = m_HeadJoint.transform.rotation;
     }
 
     // Update is called once per frame
@@ -72,7 +75,7 @@ public class ProtagonistController : MonoBehaviour
 
         transform.Rotate(new Vector3(0, mouseRotation.x * rotationSpeed * Time.deltaTime, 0) );
 
-        Quaternion previousRotation = m_HeadJoint.transform.rotation;
+        previousRotation = m_HeadJoint.transform.rotation;
 
         m_HeadJoint.transform.Rotate(new Vector3(-mouseRotation.y * rotationSpeed * Time.deltaTime, 0, 0));
 
@@ -157,7 +160,7 @@ public class ProtagonistController : MonoBehaviour
 
         bool isGroundClose = IsGroundClose();
 
-        if (isGroundClose && speedY <= 0)
+        if (isGroundClose)
         {
             if (isGrounded)
             {
