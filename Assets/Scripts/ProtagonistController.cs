@@ -68,8 +68,6 @@ public class ProtagonistController : MonoBehaviour
             }
 
             jumping = false;
-            animator.SetBool("Mining", false);
-
 
             if (Input.GetKeyDown("space"))
             {
@@ -174,11 +172,13 @@ public class ProtagonistController : MonoBehaviour
         {
             animator.SetBool("Mining", true);
         }
-        else
+        else 
         {
             animator.SetBool("Mining", false);
         }
 
+
+        //animator.GetCurrentAnimatorStateInfo(1).loop  ---> possible solution to the walk + mining bug
     }
 
     bool IsGrounded()
