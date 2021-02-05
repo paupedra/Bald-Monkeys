@@ -36,6 +36,9 @@ public class GameManager : MonoBehaviour
         UnityEngine.Cursor.visible = false;
         isMouseLocked = true;
 
+        playerCamera.enabled = true;
+        minigameCamera.enabled = false;
+
         gameState = GameState.FREEWALK;
     }
 
