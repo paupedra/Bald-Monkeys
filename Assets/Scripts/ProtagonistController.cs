@@ -27,8 +27,7 @@ public class ProtagonistController : MonoBehaviour
 
     Quaternion previousRotation;
 
-    //Artifacts
-    bool[] artifacts = new bool[5];
+    
 
     //Animations
     Animator animator;
@@ -45,10 +44,7 @@ public class ProtagonistController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < 5; i++)
-        {
-            artifacts[i] = false;
-        }
+        
         controller = GetComponent<CharacterController>();
 
         animator = GetComponent<Animator>();
@@ -264,9 +260,5 @@ public class ProtagonistController : MonoBehaviour
         return hit;
     }
 
-    public void AddArtifact(int id) //When an artifact is found the position in array is set to true
-    {
-        id--;
-        artifacts[id] = true;
-    }
+    
 }

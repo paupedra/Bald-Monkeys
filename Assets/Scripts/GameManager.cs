@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 enum GameState
 {
@@ -19,10 +20,17 @@ public class GameManager : MonoBehaviour
     GameState gameState = GameState.NONE;
     GameState oldState = GameState.NONE;
 
+    public Button[] artifactButtons;
+    public Sprite[] artifactSprites;
+    string[] artifactNames = new string[5];
+
     public Camera playerCamera;
     public Camera minigameCamera;
 
     int artifactsCollected;
+
+    //Artifacts
+    public bool[] artifacts = new bool[5];
 
     public GameObject pauseMenu;
 
@@ -31,6 +39,11 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        for (int i = 0; i < 5; i++)
+        {
+            artifacts[i] = false;
+        }
+
         gameState = GameState.FREEWALK;
 
         SwitchLockedMouse();
@@ -40,6 +53,17 @@ public class GameManager : MonoBehaviour
 
         inventoryMenu.SetActive(false);
         pauseMenu.SetActive(false);
+
+        artifactNames[0] ="Analytical Engine";
+        artifactNames[1] ="Calculator";
+        artifactNames[2] ="Plesiosaurus";
+        artifactNames[3] ="Quartz Electrometer";
+        artifactNames[4] ="Telescope";
+
+        for (int i = 0; i < 5; i++)
+        {
+            artifactButtons[i].GetComponentInChildren<Text>().text = "?";
+        }
     }
 
     // Update is called once per frame
@@ -161,5 +185,12 @@ public class GameManager : MonoBehaviour
     public void LoadMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void AddArtifact(int id) //When an artifact is found the position in array is set to true
+    {
+        id--;
+        artifacts[id] = true;
+        artifactButtons[id].GetComponentInChildren<Text>().text = artifactNames[id];
     }
 }
