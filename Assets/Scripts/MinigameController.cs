@@ -15,6 +15,10 @@ public class MinigameController : MonoBehaviour
 
     Tile[] grid = new Tile[25];
 
+    public Sprite[] artifactSprites;
+
+    public SpriteRenderer artifactRenderer;
+
     public Text artifactFoundText;
 
     public float endgameDelay=1;
@@ -180,5 +184,9 @@ public class MinigameController : MonoBehaviour
                 break;
             }
         }
+
+        artifactRenderer.gameObject.transform.SetPositionAndRotation(new Vector3(grid[r].gridTile.transform.position.x +0.4f , grid[r].gridTile.transform.position.y - 0.4f, artifactRenderer.transform.position.z),artifactRenderer.transform.rotation);
+
+        artifactRenderer.sprite = artifactSprites[artifactId];
     }
 }
