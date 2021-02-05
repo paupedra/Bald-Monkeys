@@ -71,6 +71,19 @@ public class GameManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Tab))
         {
             InventoryMenu();
+
+            SwitchLockedMouse();
+
+            if (gameState != GameState.PAUSED)
+            {
+                oldState = gameState;
+                gameState = GameState.PAUSED;
+            }
+            else
+            {
+                gameState = oldState;
+            }
+
         }
 
     }
