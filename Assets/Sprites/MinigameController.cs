@@ -3,18 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-
-
 public class MinigameController : MonoBehaviour
 {
-    struct Tile
-    {
-        public GameObject gridTile;
-        public Vector2 pos;
-        public bool isFilled;
-    }
-
-    Tile[] grid = new Tile[25];
+    public GameObject[,] grid = new GameObject[5, 5];
 
     public GameManager manager;
     public ProtagonistController protagonist;
@@ -22,7 +13,7 @@ public class MinigameController : MonoBehaviour
 
     //artifact info
     int artifactId = 0;
-    int score = 0;
+    
 
     public Sprite rock;
     int tileWidth = 32;
@@ -36,13 +27,10 @@ public class MinigameController : MonoBehaviour
         {
             for (int y = 0; y < 5; y++)
             {
-                grid[i - 1].gridTile = GameObject.Find("Grid" + i.ToString());
-                grid[i - 1].pos = new Vector2(x, y);
-                grid[i - 1].isFilled = false;
+                grid[x, y] = GameObject.Find("Grid" + i.ToString());
                 i++;
             }
         }
-        
     }
 
     // Update is called once per frame
@@ -63,34 +51,15 @@ public class MinigameController : MonoBehaviour
             if (Physics.Raycast(ray, out hit,1000.0f))
             {
                 GameObject gridHit = hit.transform.gameObject;
-                //Debug.Log(gridHit.name + " Was Hit!");
+                Debug.Log(gridHit.name + " Was Hit!");
 
                 gridHit.GetComponent<SpriteRenderer>().sprite = null;
-
-                
-                for (int i = 0; i < 25; i++)
-                {
-                    if(grid[i].gridTile == gridHit)
-                    {
-                        if(grid[i].isFilled)
-                        {
-                            score++;
-                            Debug.Log("Hit filled tile!");
-                        }
-                        
-                    }
-                }
             }
 
         }
 
         //Debug end minigame
-        //if(Input.GetKeyDown("m"))
-        //{
-        //    EndMinigame();
-        //}
-
-        if(score >= 4)
+        if(Input.GetKeyDown("m"))
         {
             EndMinigame();
         }
@@ -99,17 +68,15 @@ public class MinigameController : MonoBehaviour
 
     public void StartMinigame(int id)
     {
-        for (int i = 0; i < 25; i++)
+        for (int x = 0; x < 5; x++)
         {
-           grid[i].gridTile.GetComponent<SpriteRenderer>().sprite = rock;
-           grid[i].isFilled = false;
+            for (int y = 0; y < 5; y++)
+            {
+                grid[x, y].GetComponent<SpriteRenderer>().sprite = rock;
+            }
         }
 
         artifactId = id;
-
-        ChooseTile();
-
-        score = 0;
     }
 
     public void EndMinigame()
@@ -117,51 +84,5 @@ public class MinigameController : MonoBehaviour
         protagonist.AddArtifact(artifactId);
         manager.EndMinigame();
         Destroy(GameObject.Find("Artifact" + artifactId.ToString()));
-    }
-
-    void ChooseTile()
-    {
-        int r = Random.Range(0, 25);
-
-        while(grid[r].pos.x == 5 || grid[r].pos.y == 5)
-        {
-            r = Random.Range(0, 25);
-        }
-
-        Debug.Log("Artifact tile is: " + grid[r].pos.x.ToString() + grid[r].pos.y.ToString());
-
-        //find other digging tiles
-        Vector2 tile = new Vector2(grid[r].pos.x, grid[r].pos.y);
-        Vector2[] tiles = new Vector2[3];
-
-        tiles[0] = new Vector2(tile.x +1, tile.y);
-        tiles[1] = new Vector2(tile.x, tile.y + 1);
-        tiles[2] = new Vector2(tile.x + 1, tile.y + 1);
-
-        int found = 0;
-        for (int i = 0; i < 25; i++)
-        {
-            if(grid[i].pos == tile)
-            {
-                grid[i].isFilled = true;
-                found++;
-                continue;
-            }
-
-            for (int j = 0; j < 3; j++)
-            {
-                if(tiles[j] == grid[i].pos)
-                {
-                    grid[i].isFilled = true;
-                    found++;
-                    break;
-                }
-            }
-
-            if(found >=4)
-            {
-                break;
-            }
-        }
     }
 }
