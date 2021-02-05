@@ -20,14 +20,25 @@ public class GameManager : MonoBehaviour
     GameState gameState = GameState.NONE;
     GameState oldState = GameState.NONE;
 
-    public Button[] artifactButtons;
-    public Sprite[] artifactSprites;
-    string[] artifactNames = new string[5];
-
     public Camera playerCamera;
     public Camera minigameCamera;
+    public Camera inventoryCamera;
 
-    int artifactsCollected;
+    //inventory UI
+    public Button[] artifactButtons;
+    public Texture[] artifactSprites;
+    public Texture[] hiddenArtifactSprites;
+    string[] artifactNames = new string[5];
+
+    //rotating UI
+    public GameObject rotatingObject;
+    public GameObject model;
+    public GameObject artifactText;
+    public GameObject artifactImage;
+
+    public Object[] artifactModels;
+    public Object[] artifactTexts;
+    public Object[] artifactImages;
 
     //Artifacts
     public bool[] artifacts = new bool[5];
@@ -63,6 +74,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < 5; i++)
         {
             artifactButtons[i].GetComponentInChildren<Text>().text = "?";
+            artifactButtons[i].GetComponentInChildren<RawImage>().texture = hiddenArtifactSprites[i]; //hiddenArtifactSprites[i]
         }
     }
 
@@ -106,14 +118,34 @@ public class GameManager : MonoBehaviour
     {
         InventoryMenu();
 
+        
+
         if (gameState != GameState.INVENTORY)
         {
             oldState = gameState;
             gameState = GameState.INVENTORY;
+            inventoryCamera.enabled = true;
+            minigameCamera.enabled = false;
+            playerCamera.enabled = false;
         }
         else
         {
             gameState = oldState;
+            inventoryCamera.enabled = true;
+            
+            
+
+            if(oldState == GameState.FREEWALK)
+            {
+                playerCamera.enabled = true;
+                minigameCamera.enabled = false;
+            }
+
+            if(oldState == GameState.MINIGAME)
+            {
+                minigameCamera.enabled = true;
+                playerCamera.enabled = false;
+            }
         }
 
         SwitchLockedMouse(); //Do after switching GameState
@@ -179,7 +211,6 @@ public class GameManager : MonoBehaviour
     public int GetGameState()
     {
         return (int)gameState;
-
     }
 
     public void LoadMainMenu()
@@ -192,5 +223,55 @@ public class GameManager : MonoBehaviour
         id--;
         artifacts[id] = true;
         artifactButtons[id].GetComponentInChildren<Text>().text = artifactNames[id];
+        artifactButtons[id].GetComponentInChildren<RawImage>().texture = artifactSprites[id];
+    }
+
+    public void ShowAnalyticalEngine()
+    {
+        SwitchRotatingUi(0);
+    }
+    public void ShowCalculator()
+    {
+        SwitchRotatingUi(1);
+    }
+    public void ShowPlesiosaurus()
+    {
+        SwitchRotatingUi(2);
+    }
+    public void ShowQuartzElectrometer()
+    {
+        SwitchRotatingUi(3);
+    }
+    public void ShowTelescope()
+    {
+        SwitchRotatingUi(4);
+    }
+
+    void SwitchRotatingUi(int i)
+    {
+        if (artifacts[i])
+        {
+            ClearRotatingUi();
+
+            Instantiate(artifactModels[i], model.transform.position, model.transform.rotation, model.transform);
+            Instantiate(artifactTexts[i], artifactText.transform.position, artifactText.transform.rotation, artifactText.transform);
+            Instantiate(artifactImages[i], artifactImage.transform.position, artifactImage.transform.rotation, artifactImage.transform);
+        }
+    }
+
+    void ClearRotatingUi()
+    {
+        foreach (Transform mod in model.transform)
+        {
+            Destroy(mod.gameObject);
+        }
+        foreach (Transform mod in artifactText.transform)
+        {
+            Destroy(mod.gameObject);
+        }
+        foreach (Transform mod in artifactImage.transform)
+        {
+            Destroy(mod.gameObject);
+        }
     }
 }
