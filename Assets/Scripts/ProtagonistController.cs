@@ -21,6 +21,9 @@ public class ProtagonistController : MonoBehaviour
     public float jumpSpeed = 100;
 
     public float raycastLength = 10;
+    bool mining = false;
+
+    float miningTimer = 0;
 
     //Artifacts
     bool[] artifacts = new bool[5];
@@ -81,25 +84,16 @@ public class ProtagonistController : MonoBehaviour
             }
         }
 
-        isGrounded = IsGrounded();
-
-        bool isGroundClose = IsGroundClose();
-
-        if (isGroundClose && speedY <= 0)
+        //Mining
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            if (isGrounded)
+            if (!jumping)
             {
-                speedY = 0f;
+                mining = true;
             }
-
-            jumping = false;
-
-            if (Input.GetKeyDown("space"))
-            {
-                speedY = jumpSpeed;
-            }
-
         }
+
+        IsGroundedCheck();
 
         UpdateAnimatorParameters();
 
@@ -115,8 +109,15 @@ public class ProtagonistController : MonoBehaviour
             return;
         }
 
-        if (animator.GetBool("Mining"))
+        if (mining)
         {
+            miningTimer += Time.deltaTime;
+
+            if(miningTimer>= 1.5)
+            {
+                mining = false;
+                miningTimer = 0;
+            }
             return;
         }
 
@@ -150,7 +151,28 @@ public class ProtagonistController : MonoBehaviour
         controller.Move(new Vector3(0, speedY * Time.deltaTime, 0));
     }
 
-    
+    void IsGroundedCheck()
+    {
+        isGrounded = IsGrounded();
+
+        bool isGroundClose = IsGroundClose();
+
+        if (isGroundClose && speedY <= 0)
+        {
+            if (isGrounded)
+            {
+                speedY = 0f;
+            }
+
+            jumping = false;
+
+            if (Input.GetKeyDown("space") && !mining)
+            {
+                speedY = jumpSpeed;
+            }
+
+        }
+    }
 
     void UpdateAnimatorParameters()
     {
@@ -186,7 +208,8 @@ public class ProtagonistController : MonoBehaviour
 
         animator.SetBool("Jumping", jumping);
 
-        if (Input.GetKey("f"))
+        //Mining
+        if (mining)
         {
             animator.SetBool("Mining", true);
         }
@@ -203,7 +226,7 @@ public class ProtagonistController : MonoBehaviour
     {
         bool hit = Physics.Raycast(new Ray(transform.position, new Vector3(0, -1, 0)),raycastLength);
 
-        Color rayColor = Color.red;
+        Color rayColor;
 
         if(hit)
         {
@@ -222,7 +245,7 @@ public class ProtagonistController : MonoBehaviour
     {
         bool hit = Physics.Raycast(new Ray(transform.position, new Vector3(0, -1, 0)), raycastLength + 0.4f);
 
-        Color rayColor = Color.red;
+        Color rayColor;
 
         if (hit)
         {
