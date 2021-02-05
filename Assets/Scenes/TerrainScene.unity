@@ -20,11 +20,11 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0.41509435, g: 0.40546525, b: 0.38572446, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
@@ -1264,12 +1264,12 @@ Terrain:
   m_Enabled: 1
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: 15c8e7cd79df52d4b9690438bd249e3b, type: 2}
-  m_TreeDistance: 5000
-  m_TreeBillboardDistance: 50
-  m_TreeCrossFadeLength: 5
-  m_TreeMaximumFullLODCount: 50
+  m_TreeDistance: 4012
+  m_TreeBillboardDistance: 207
+  m_TreeCrossFadeLength: 52.3
+  m_TreeMaximumFullLODCount: 865
   m_DetailObjectDistance: 250
-  m_DetailObjectDensity: 1
+  m_DetailObjectDensity: 0.008
   m_HeightmapPixelError: 5
   m_SplatMapDistance: 1000
   m_HeightmapMaximumLOD: 0
@@ -2171,13 +2171,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 638831400}
-  m_LocalRotation: {x: -0, y: 0.9992893, z: -0, w: -0.03769724}
-  m_LocalPosition: {x: 587.7, y: 33.3, z: 2725.5}
+  m_LocalRotation: {x: 0.078196436, y: 0.91374654, z: -0.21136458, w: 0.3380497}
+  m_LocalPosition: {x: 282, y: 149.6, z: 2536.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 184.321, z: 0}
+  m_LocalEulerAnglesHint: {x: 26.049002, y: 139.395, z: 0}
 --- !u!1001 &715870106
 PrefabInstance:
   m_ObjectHideFlags: 0
